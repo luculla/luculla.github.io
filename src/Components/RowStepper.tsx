@@ -1,11 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
 
 
 interface RowStepperProps{
     rows:string[];
 }
 export default function RowStepper({rows}:RowStepperProps){
-        const [rowIndex, setRowIndex] = useState<number>(0);
+        const rowKey = "StoredRow"
+        const [rowIndex, setRowIndex] = useState<number>(Number(localStorage.getItem(rowKey)??"0"));
+        useEffect(()=>{
+            localStorage.setItem(rowKey,`${rowIndex}`)
+          },[rowIndex])
         function nextRow(){
             setRowIndex(rowIndex+1)
         }

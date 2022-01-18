@@ -1,21 +1,23 @@
-import React, { useMemo, useState } from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'bootstrap/dist/js/bootstrap';
 import './App.scss';
 import RowStepper from './Components/RowStepper';
 
 function App() {
-  const [patt, setPatt] = useState<string>("");
+  const patternKey = "StoredPattern"
+  const [patt, setPatt] = useState<string>(localStorage.getItem(patternKey)??"");
   function handlepatt(event:React.ChangeEvent<HTMLTextAreaElement>) {
     setPatt(event.target.value);
   }
   const rows=useMemo(()=>{
       return patt.split("$")
   },[patt])
+  useEffect(()=>{
+    localStorage.setItem(patternKey,patt)
+  },[patt])
   return (
     <div className="App p-4">
       <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <div className="my-4">Welcome to PlaceMarker</div>
       </header>
       <div className="row"><div className="col">
@@ -30,6 +32,7 @@ function App() {
         <br/>
         <RowStepper rows={rows}/>
         <br/>
+        The pattern is stored locally on your device. If you clear your local storage, all data will vanish (and you may lose your place on your pattern)
         <a href='https://ko-fi.com/waywardfacets' target='_blank'><img height='35' style={{border:"0px",height:"46px"}} src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' alt='Buy Me a Coffee at ko-fi.com'/></a>
       </div></div>
     </div>
